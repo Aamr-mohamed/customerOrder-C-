@@ -1,35 +1,50 @@
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using CustomerOrderSystem.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
-namespace CustomerOrderSystem.Data
+namespace CustomerOrderSystemContext.Data
 {
-	public class CustomerOrderSystemContext : IdentityDbContext
-	{
-		public CustomerOrderSystemContext(DbContextOptions<CustomerOrderSystemContext> options)
-			: base(options)
-		{
-		}
+    public class ApplicationDbContext : IdentityUserContext<ApplicationUser>
+    {
 
-		public DbSet<User> User { get; set; }
-		public DbSet<Order> Orders { get; set; }
-		public DbSet<OrderItem> OrderItems { get; set; }
-		public DbSet<Product> Products { get; set; }
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+            : base(options)
+        {
+        }
 
-		protected override void OnModelCreating(ModelBuilder modelBuilder)
-		{
-			base.OnModelCreating(modelBuilder);
 
-			modelBuilder.Entity<Order>()
-				.HasOne(o => o.User)
-				.WithMany(c => c.Orders)
-				.HasForeignKey(o => o.UserId);
+        // public DbSet<User> User { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<Product> Products { get; set; }
 
-			modelBuilder.Entity<OrderItem>()
-				.HasOne(oi => oi.Order)
-				.WithMany(o => o.OrderItems)
-				.HasForeignKey(oi => oi.OrderId);
-		}
-	}
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<OrderItem>()
+                    .HasIndex(o => o.ProductId)
+                    .IsUnique(false);
+
+            modelBuilder.Entity<OrderItem>()
+                .HasIndex(o => new { o.OrderId, o.ProductId })
+                .IsUnique();
+            modelBuilder.Entity<OrderItem>()
+                    .Property(o => o.Price)
+                    .HasColumnType("decimal(18, 2)");
+
+            modelBuilder.Entity<Product>()
+                .Property(p => p.Price)
+                .HasColumnType("decimal(18, 2)");
+        }
+
+    }
 }
+
+
+
+
+
+
 

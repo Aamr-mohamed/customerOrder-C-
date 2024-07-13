@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using CustomerOrderSystem.Models;
-using CustomerOrderSystem.Data;
+using CustomerOrderSystemContext.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
@@ -10,9 +10,9 @@ namespace CustomerOrderSystem.Controllers
     [Route("api/[controller]")]
     public class OrderItemsController : ControllerBase
     {
-        private readonly CustomerOrderSystemContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public OrderItemsController(CustomerOrderSystemContext context)
+        public OrderItemsController(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -42,7 +42,7 @@ namespace CustomerOrderSystem.Controllers
             _context.OrderItems.Add(orderItem);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetOrderItem", new { id = orderItem.OrderItemId }, orderItem);
+            return CreatedAtAction("GetOrderItem", new { id = orderItem.Id }, orderItem);
         }
     }
 }
