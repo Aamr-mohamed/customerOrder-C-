@@ -22,6 +22,7 @@ namespace CustomerOrderSystem.Controllers
             _tokenService = tokenService;
         }
 
+        [Authorize(Roles = "Sales")]
         [HttpGet]
         public async Task<IActionResult> GetOrders()
         {
@@ -29,11 +30,11 @@ namespace CustomerOrderSystem.Controllers
             return Ok(orders);
         }
 
+        [Authorize(Roles = "Customer,Sales")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetOrder(int id)
         {
             var order = await _context.Orders.Include(o => o.OrderItems).FirstOrDefaultAsync(o => o.Id == id);
-
             if (order == null)
             {
                 return NotFound();
@@ -42,14 +43,13 @@ namespace CustomerOrderSystem.Controllers
             return Ok(order);
         }
 
-        // [Authorize (Roles = "Customer")]
+        [Authorize(Roles = "Customer,Sales")]
         [HttpPost]
         public async Task<ActionResult<OrderResponse>> CreateOrder([FromBody] OrderRequest request)
         {
 
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var userName = User.FindFirst(ClaimTypes.Name)?.Value;
-            // var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
             // var id="71a18ec5-b295-4f31-841e-96e80a1c753d";
             // Console.WriteLine($"UserId: {userId}");
             // Console.WriteLine($"UserName: {userName}");
@@ -101,6 +101,8 @@ namespace CustomerOrderSystem.Controllers
             return CreatedAtAction("GetOrder", new { id = order.Id }, order);
         }
 
+
+        [Authorize(Roles = "Customer,Sales")]
         [HttpPut("{id}")]
         public async Task<ActionResult<OrderResponse>> UpdateOrder(int id, [FromBody] UpdateOrderRequest request)
         {
@@ -151,6 +153,8 @@ namespace CustomerOrderSystem.Controllers
             }
         }
 
+
+		[Authorize (Roles = "Customer,Sales")]
         [HttpDelete("{id}")]
         public async Task<ActionResult<OrderResponse>> DeleteOrder(int id)
         {

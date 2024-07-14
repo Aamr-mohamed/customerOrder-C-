@@ -88,6 +88,38 @@ namespace CustomerOrderSystem.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "1",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "3608e43a-1f64-4763-9d09-8484489c6906",
+                            Email = "john.doe@example.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            PasswordHash = "AQAAAAIAAYagAAAAELposcfQD2OK0SW8IZyavMjVqG7Hx9K8rJvyszg5Cyr2HT7+VLY2pUrDrmx4SnG5Iw==",
+                            PhoneNumberConfirmed = false,
+                            Role = 0,
+                            SecurityStamp = "09dade5d-a12a-4bc5-9c57-020d6dc34d70",
+                            TwoFactorEnabled = false,
+                            UserName = "john doe"
+                        },
+                        new
+                        {
+                            Id = "2",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "ef407c88-6142-4f8f-88c7-cce1f16e4949",
+                            Email = "jane.smith@example.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            PasswordHash = "AQAAAAIAAYagAAAAEDCd8nC5GJLsgXnF2fsXIJ6f3dZoYCyf1p8m3Svv9GvJ9bgpifwe+mjUqUJTKmuI6g==",
+                            PhoneNumberConfirmed = false,
+                            Role = 1,
+                            SecurityStamp = "0aa6aa58-a7eb-42cb-a32b-835114fcc94a",
+                            TwoFactorEnabled = false,
+                            UserName = "jane smith"
+                        });
                 });
 
             modelBuilder.Entity("CustomerOrderSystem.Models.Order", b =>
@@ -113,6 +145,22 @@ namespace CustomerOrderSystem.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Orders");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CustomerName = "John Doe",
+                            OrderDate = new DateTime(2024, 7, 14, 13, 54, 18, 889, DateTimeKind.Local).AddTicks(1542),
+                            UserId = "1"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CustomerName = "Jane Smith",
+                            OrderDate = new DateTime(2021, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = "2"
+                        });
                 });
 
             modelBuilder.Entity("CustomerOrderSystem.Models.OrderItem", b =>
@@ -143,6 +191,40 @@ namespace CustomerOrderSystem.Migrations
                         .IsUnique();
 
                     b.ToTable("OrderItems");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            OrderId = 1,
+                            Price = 19.99m,
+                            ProductId = 1,
+                            Quantity = 2
+                        },
+                        new
+                        {
+                            Id = 2,
+                            OrderId = 1,
+                            Price = 24.50m,
+                            ProductId = 2,
+                            Quantity = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            OrderId = 2,
+                            Price = 15.75m,
+                            ProductId = 3,
+                            Quantity = 3
+                        },
+                        new
+                        {
+                            Id = 4,
+                            OrderId = 2,
+                            Price = 20.0m,
+                            ProductId = 4,
+                            Quantity = 2
+                        });
                 });
 
             modelBuilder.Entity("CustomerOrderSystem.Models.Product", b =>
@@ -167,6 +249,71 @@ namespace CustomerOrderSystem.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Products");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "its a t-shirt size 10 cheap and amazing",
+                            Price = 15.75m,
+                            ProductName = "T-Shirt"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "A World class magnificent ball",
+                            Price = 15.75m,
+                            ProductName = "Ball"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "A pair of shoes",
+                            Price = 15.75m,
+                            ProductName = "Shoes"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Description = "A hat",
+                            Price = 15.75m,
+                            ProductName = "Hat"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Description = "its a t-shirt size 10 cheap and amazing",
+                            Price = 15.75m,
+                            ProductName = "T-Shirt"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Description = "A World class magnificent ball",
+                            Price = 15.75m,
+                            ProductName = "Ball"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Description = "A pair of shoes",
+                            Price = 15.75m,
+                            ProductName = "Shoes"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Description = "A hat",
+                            Price = 15.75m,
+                            ProductName = "Hat"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Description = "its a t-shirt size 10 cheap and amazing",
+                            Price = 15.75m,
+                            ProductName = "T-Shirt"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>

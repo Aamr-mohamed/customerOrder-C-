@@ -8,4 +8,18 @@ namespace CustomerOrderSystem.Models
 		public decimal Price { get; set; }
 		public ICollection<OrderItem> OrderItems { get; set; }
 	}
+
+	public class OrderItemDto
+	{
+		public int Id { get; set; }
+		public int ProductId { get; set; }
+		public decimal Price { get; set; }
+	}
+
+	public class OrderDto
+	{
+		public int Id { get; set; }
+		public int UserId { get; set; }
+		public ICollection<OrderItemDto> OrderItems { get; set; }
+	}
 }

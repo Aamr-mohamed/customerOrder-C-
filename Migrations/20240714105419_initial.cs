@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace CustomerOrderSystem.Migrations
 {
     /// <inheritdoc />
@@ -162,6 +164,51 @@ namespace CustomerOrderSystem.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "Role", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[,]
+                {
+                    { "1", 0, "3608e43a-1f64-4763-9d09-8484489c6906", "john.doe@example.com", false, false, null, null, null, "AQAAAAIAAYagAAAAELposcfQD2OK0SW8IZyavMjVqG7Hx9K8rJvyszg5Cyr2HT7+VLY2pUrDrmx4SnG5Iw==", null, false, 0, "09dade5d-a12a-4bc5-9c57-020d6dc34d70", false, "john doe" },
+                    { "2", 0, "ef407c88-6142-4f8f-88c7-cce1f16e4949", "jane.smith@example.com", false, false, null, null, null, "AQAAAAIAAYagAAAAEDCd8nC5GJLsgXnF2fsXIJ6f3dZoYCyf1p8m3Svv9GvJ9bgpifwe+mjUqUJTKmuI6g==", null, false, 1, "0aa6aa58-a7eb-42cb-a32b-835114fcc94a", false, "jane smith" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Products",
+                columns: new[] { "Id", "Description", "Price", "ProductName" },
+                values: new object[,]
+                {
+                    { 1, "its a t-shirt size 10 cheap and amazing", 15.75m, "T-Shirt" },
+                    { 2, "A World class magnificent ball", 15.75m, "Ball" },
+                    { 3, "A pair of shoes", 15.75m, "Shoes" },
+                    { 4, "A hat", 15.75m, "Hat" },
+                    { 5, "its a t-shirt size 10 cheap and amazing", 15.75m, "T-Shirt" },
+                    { 6, "A World class magnificent ball", 15.75m, "Ball" },
+                    { 7, "A pair of shoes", 15.75m, "Shoes" },
+                    { 8, "A hat", 15.75m, "Hat" },
+                    { 9, "its a t-shirt size 10 cheap and amazing", 15.75m, "T-Shirt" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Orders",
+                columns: new[] { "Id", "CustomerName", "OrderDate", "UserId" },
+                values: new object[,]
+                {
+                    { 1, "John Doe", new DateTime(2024, 7, 14, 13, 54, 18, 889, DateTimeKind.Local).AddTicks(1542), "1" },
+                    { 2, "Jane Smith", new DateTime(2021, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "2" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "OrderItems",
+                columns: new[] { "Id", "OrderId", "Price", "ProductId", "Quantity" },
+                values: new object[,]
+                {
+                    { 1, 1, 19.99m, 1, 2 },
+                    { 2, 1, 24.50m, 2, 1 },
+                    { 3, 2, 15.75m, 3, 3 },
+                    { 4, 2, 20.0m, 4, 2 }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserClaims_UserId",
                 table: "AspNetUserClaims",
@@ -185,15 +232,15 @@ namespace CustomerOrderSystem.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderItems_OrderId",
+                name: "IX_OrderItems_OrderId_ProductId",
                 table: "OrderItems",
-                column: "OrderId");
+                columns: new[] { "OrderId", "ProductId" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrderItems_ProductId",
                 table: "OrderItems",
-                column: "ProductId",
-                unique: true);
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_UserId",
