@@ -25,13 +25,14 @@ namespace CustomerOrderSystem.Controllers
         [HttpGet]
         public async Task<IActionResult> GetOrders()
         {
-            return Ok(await _context.Orders.ToListAsync());
+            var orders = await _context.Orders.Include(o => o.OrderItems).ToListAsync();
+            return Ok(orders);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetOrder(int id)
         {
-            var order = await _context.Orders.FindAsync(id);
+            var order = await _context.Orders.Include(o => o.OrderItems).FirstOrDefaultAsync(o => o.Id == id);
 
             if (order == null)
             {
@@ -86,9 +87,8 @@ namespace CustomerOrderSystem.Controllers
             }
             var order = new Order
             {
-                // User = user,
                 UserId = user.Id,
-                CustomerName = request.CustomerName,
+                CustomerName = user.UserName,
                 OrderDate = request.OrderDate,
                 OrderItems = orderItems
             };
@@ -127,7 +127,7 @@ namespace CustomerOrderSystem.Controllers
 
                     if (existingOrderItemsDictionary.TryGetValue(item.ProductId, out var existingItem))
                     {
-                        existingItem.Quantity += item.Quantity; // Update quantity
+                        existingItem.Quantity += item.Quantity;
                     }
                     else
                     {
@@ -143,12 +143,27 @@ namespace CustomerOrderSystem.Controllers
                 _context.Orders.Update(existingOrder);
                 await _context.SaveChangesAsync();
 
-                return Ok(request);
+                return Ok(existingOrder);
             }
             else
             {
                 return NotFound("Order not found.");
             }
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<OrderResponse>> DeleteOrder(int id)
+        {
+            var existingOrder = await _context.Orders.Include(o => o.OrderItems).FirstOrDefaultAsync(o => o.Id == id);
+            if (existingOrder == null)
+            {
+                return NotFound("Order not found.");
+            }
+
+            _context.Orders.Remove(existingOrder);
+            await _context.SaveChangesAsync();
+
+            return Ok(existingOrder);
         }
     }
 }
