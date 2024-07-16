@@ -37,7 +37,7 @@ namespace CustomerOrderSystem.Controllers
             return Ok(orderItem);
         }
 
-        // [Authorize(Roles = "Customer,Sales")]
+        [Authorize(Roles = "Customer,Sales")]
         [HttpPost("{id}")]
         public async Task<ActionResult<OrderItemDto>> CreateOrderItem(int id, [FromBody] CreateOrderItemRequest orderItem)
         {

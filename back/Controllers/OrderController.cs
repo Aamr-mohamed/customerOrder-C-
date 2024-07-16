@@ -58,10 +58,10 @@ namespace CustomerOrderSystem.Controllers
                     OrderItems = o.OrderItems.Select(oi => new OrderItemDto
                     {
                         Id = oi.Id,
-						OrderId=o.Id,
+                        OrderId = o.Id,
                         Quantity = oi.Quantity,
-						ProductName=oi.ProductName,
-						ProductDescription=oi.ProductDescription,
+                        ProductName = oi.ProductName,
+                        ProductDescription = oi.ProductDescription,
                         Price = oi.Price,
                         ProductId = oi.ProductId,
                     }).ToList()
@@ -114,7 +114,7 @@ namespace CustomerOrderSystem.Controllers
                         ProductName = existingProduct.ProductName,
                         ProductDescription = existingProduct.Description,
                         Quantity = item.Quantity,
-						Price = existingProduct.Price
+                        Price = existingProduct.Price
                     });
                 }
             }
@@ -145,6 +145,8 @@ namespace CustomerOrderSystem.Controllers
             {
                 return NotFound("Order not found.");
             }
+
+            // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJyYnZlZXIzaDUzNW5uM24zNW55bnk1dW1iYnQiLCJqdGkiOiIzNDI4OTllYS00ZjM5LTRkZDAtODVmZC1kYjYwNGYzMjhjNDAiLCJpYXQiOiIxNzIxMTI3MTYzIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiI2ZjQ2YWRmYS1lNzIzLTQ0MmQtYTQ2YS03YzBiYzg3MmFkMTYiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoic3RyaW5nIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZW1haWxhZGRyZXNzIjoic3RyaW5nQGcuYyIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkN1c3RvbWVyIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9leHBpcmF0aW9uIjoiNy8xNi8yMDI0IDExOjUyOjQzIEFNIiwiZXhwIjoxNzIxMTMwNzYzLCJpc3MiOiJFeGFtcGxlSXNzdWVyIiwiYXVkIjoiRXhhbXBsZUF1ZGllbmNlIn0.Yd62PLpmC1NjI20Ifzo0nN - 8IjYJ3EAbq6Eypv4Jtnw
 
             existingOrder.CustomerName = request.CustomerName;
             existingOrder.OrderDate = request.OrderDate ?? existingOrder.OrderDate;
