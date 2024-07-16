@@ -143,6 +143,8 @@ namespace CustomerOrderSystem.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Quantity = table.Column<int>(type: "int", nullable: false),
+                    ProductName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ProductDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     OrderId = table.Column<int>(type: "int", nullable: false),
                     ProductId = table.Column<int>(type: "int", nullable: false)
@@ -169,8 +171,8 @@ namespace CustomerOrderSystem.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "Role", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "1", 0, "3608e43a-1f64-4763-9d09-8484489c6906", "john.doe@example.com", false, false, null, null, null, "AQAAAAIAAYagAAAAELposcfQD2OK0SW8IZyavMjVqG7Hx9K8rJvyszg5Cyr2HT7+VLY2pUrDrmx4SnG5Iw==", null, false, 0, "09dade5d-a12a-4bc5-9c57-020d6dc34d70", false, "john doe" },
-                    { "2", 0, "ef407c88-6142-4f8f-88c7-cce1f16e4949", "jane.smith@example.com", false, false, null, null, null, "AQAAAAIAAYagAAAAEDCd8nC5GJLsgXnF2fsXIJ6f3dZoYCyf1p8m3Svv9GvJ9bgpifwe+mjUqUJTKmuI6g==", null, false, 1, "0aa6aa58-a7eb-42cb-a32b-835114fcc94a", false, "jane smith" }
+                    { "1", 0, "a36a0bd4-4587-434e-8c52-5b1001c77345", "john.doe@example.com", false, false, null, "JOHN.DOE@EXAMPLE.COM", "JOHN.DOE", "AQAAAAIAAYagAAAAELUd6KOQP7nDvkH2BVmRVB5SFoVlhuSgo+pMxCrhCBWVslmVAcD+nOmEPiesko6EMg==", null, false, 0, "7368d7f1-2c5e-40e7-b169-8ae13a379ff9", false, "john.doe" },
+                    { "2", 0, "7b1e5403-fe9a-4f4c-859d-ba1b81832ada", "jane.smith@example.com", false, false, null, "JANE.SMITH@EXAMPLE.COM", "JANE.SMITH", "AQAAAAIAAYagAAAAEPny2HKmjz5EbvtQLR5Vqs5nKiljW2TywsTIgsxtws0QQ7dhV0JhvGJ5Odcc0XckMA==", null, false, 1, "92c0794d-4dab-4152-82a1-7feba545a0e0", false, "jane.smith" }
                 });
 
             migrationBuilder.InsertData(
@@ -194,19 +196,19 @@ namespace CustomerOrderSystem.Migrations
                 columns: new[] { "Id", "CustomerName", "OrderDate", "UserId" },
                 values: new object[,]
                 {
-                    { 1, "John Doe", new DateTime(2024, 7, 14, 13, 54, 18, 889, DateTimeKind.Local).AddTicks(1542), "1" },
+                    { 1, "John Doe", new DateTime(2024, 7, 16, 2, 1, 6, 350, DateTimeKind.Local).AddTicks(1804), "1" },
                     { 2, "Jane Smith", new DateTime(2021, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "2" }
                 });
 
             migrationBuilder.InsertData(
                 table: "OrderItems",
-                columns: new[] { "Id", "OrderId", "Price", "ProductId", "Quantity" },
+                columns: new[] { "Id", "OrderId", "Price", "ProductDescription", "ProductId", "ProductName", "Quantity" },
                 values: new object[,]
                 {
-                    { 1, 1, 19.99m, 1, 2 },
-                    { 2, 1, 24.50m, 2, 1 },
-                    { 3, 2, 15.75m, 3, 3 },
-                    { 4, 2, 20.0m, 4, 2 }
+                    { 4, 2, 20.0m, "A hat", 4, "Hat", 2 },
+                    { 5, 2, 20.0m, "its a t-shirt size 10 cheap and amazing", 5, "T-Shirt", 2 },
+                    { 6, 2, 20.0m, "A World class magnificent ball", 6, "Ball", 2 },
+                    { 7, 2, 20.0m, "A pair of shoes", 7, "Shoes", 2 }
                 });
 
             migrationBuilder.CreateIndex(

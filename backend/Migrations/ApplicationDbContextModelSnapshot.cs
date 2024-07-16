@@ -94,31 +94,35 @@ namespace CustomerOrderSystem.Migrations
                         {
                             Id = "1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "3608e43a-1f64-4763-9d09-8484489c6906",
+                            ConcurrencyStamp = "a36a0bd4-4587-434e-8c52-5b1001c77345",
                             Email = "john.doe@example.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAELposcfQD2OK0SW8IZyavMjVqG7Hx9K8rJvyszg5Cyr2HT7+VLY2pUrDrmx4SnG5Iw==",
+                            NormalizedEmail = "JOHN.DOE@EXAMPLE.COM",
+                            NormalizedUserName = "JOHN.DOE",
+                            PasswordHash = "AQAAAAIAAYagAAAAELUd6KOQP7nDvkH2BVmRVB5SFoVlhuSgo+pMxCrhCBWVslmVAcD+nOmEPiesko6EMg==",
                             PhoneNumberConfirmed = false,
                             Role = 0,
-                            SecurityStamp = "09dade5d-a12a-4bc5-9c57-020d6dc34d70",
+                            SecurityStamp = "7368d7f1-2c5e-40e7-b169-8ae13a379ff9",
                             TwoFactorEnabled = false,
-                            UserName = "john doe"
+                            UserName = "john.doe"
                         },
                         new
                         {
                             Id = "2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "ef407c88-6142-4f8f-88c7-cce1f16e4949",
+                            ConcurrencyStamp = "7b1e5403-fe9a-4f4c-859d-ba1b81832ada",
                             Email = "jane.smith@example.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAEDCd8nC5GJLsgXnF2fsXIJ6f3dZoYCyf1p8m3Svv9GvJ9bgpifwe+mjUqUJTKmuI6g==",
+                            NormalizedEmail = "JANE.SMITH@EXAMPLE.COM",
+                            NormalizedUserName = "JANE.SMITH",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPny2HKmjz5EbvtQLR5Vqs5nKiljW2TywsTIgsxtws0QQ7dhV0JhvGJ5Odcc0XckMA==",
                             PhoneNumberConfirmed = false,
                             Role = 1,
-                            SecurityStamp = "0aa6aa58-a7eb-42cb-a32b-835114fcc94a",
+                            SecurityStamp = "92c0794d-4dab-4152-82a1-7feba545a0e0",
                             TwoFactorEnabled = false,
-                            UserName = "jane smith"
+                            UserName = "jane.smith"
                         });
                 });
 
@@ -151,7 +155,7 @@ namespace CustomerOrderSystem.Migrations
                         {
                             Id = 1,
                             CustomerName = "John Doe",
-                            OrderDate = new DateTime(2024, 7, 14, 13, 54, 18, 889, DateTimeKind.Local).AddTicks(1542),
+                            OrderDate = new DateTime(2024, 7, 16, 2, 1, 6, 350, DateTimeKind.Local).AddTicks(1804),
                             UserId = "1"
                         },
                         new
@@ -177,8 +181,16 @@ namespace CustomerOrderSystem.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18, 2)");
 
+                    b.Property<string>("ProductDescription")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
+
+                    b.Property<string>("ProductName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
@@ -195,34 +207,42 @@ namespace CustomerOrderSystem.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
-                            OrderId = 1,
-                            Price = 19.99m,
-                            ProductId = 1,
+                            Id = 4,
+                            OrderId = 2,
+                            Price = 20.0m,
+                            ProductDescription = "A hat",
+                            ProductId = 4,
+                            ProductName = "Hat",
                             Quantity = 2
                         },
                         new
                         {
-                            Id = 2,
-                            OrderId = 1,
-                            Price = 24.50m,
-                            ProductId = 2,
-                            Quantity = 1
-                        },
-                        new
-                        {
-                            Id = 3,
-                            OrderId = 2,
-                            Price = 15.75m,
-                            ProductId = 3,
-                            Quantity = 3
-                        },
-                        new
-                        {
-                            Id = 4,
+                            Id = 5,
                             OrderId = 2,
                             Price = 20.0m,
-                            ProductId = 4,
+                            ProductDescription = "its a t-shirt size 10 cheap and amazing",
+                            ProductId = 5,
+                            ProductName = "T-Shirt",
+                            Quantity = 2
+                        },
+                        new
+                        {
+                            Id = 6,
+                            OrderId = 2,
+                            Price = 20.0m,
+                            ProductDescription = "A World class magnificent ball",
+                            ProductId = 6,
+                            ProductName = "Ball",
+                            Quantity = 2
+                        },
+                        new
+                        {
+                            Id = 7,
+                            OrderId = 2,
+                            Price = 20.0m,
+                            ProductDescription = "A pair of shoes",
+                            ProductId = 7,
+                            ProductName = "Shoes",
                             Quantity = 2
                         });
                 });

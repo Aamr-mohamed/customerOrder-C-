@@ -25,11 +25,32 @@ namespace CustomerOrderSystemContext.Data
         {
             base.OnModelCreating(modelBuilder);
             var passwordHasher = new PasswordHasher<ApplicationUser>();
-            modelBuilder.Entity<ApplicationUser>()
-                .HasData(
-                        new ApplicationUser {Id="1", UserName = "john doe", Email = "john.doe@example.com", PasswordHash = passwordHasher.HashPassword(null, "password123"), Role = Role.Customer },
-                        new ApplicationUser {Id="2", UserName = "jane smith", Email = "jane.smith@example.com", PasswordHash = passwordHasher.HashPassword(null, "password123"), Role = Role.Sales }
-                        );
+
+            var user1 = new ApplicationUser
+            {
+                Id = "1",
+                UserName = "john.doe",
+                NormalizedUserName = "JOHN.DOE",
+                Email = "john.doe@example.com",
+                NormalizedEmail = "JOHN.DOE@EXAMPLE.COM",
+                SecurityStamp = Guid.NewGuid().ToString(),
+                Role = Role.Customer
+            };
+            user1.PasswordHash = passwordHasher.HashPassword(user1, "password123");
+
+            var user2 = new ApplicationUser
+            {
+                Id = "2",
+                UserName = "jane.smith",
+                NormalizedUserName = "JANE.SMITH",
+                Email = "jane.smith@example.com",
+                NormalizedEmail = "JANE.SMITH@EXAMPLE.COM",
+                SecurityStamp = Guid.NewGuid().ToString(),
+                Role = Role.Sales
+            };
+            user2.PasswordHash = passwordHasher.HashPassword(user2, "password123");
+
+            modelBuilder.Entity<ApplicationUser>().HasData(user1, user2);
             modelBuilder.Entity<Order>()
                 .HasData(
                     new Order
@@ -50,10 +71,11 @@ namespace CustomerOrderSystemContext.Data
 
             modelBuilder.Entity<OrderItem>()
                 .HasData(
-                    new OrderItem { Id = 1, OrderId = 1, ProductId = 1, Quantity = 2, Price = 19.99m },
-                    new OrderItem { Id = 2, OrderId = 1, ProductId = 2, Quantity = 1, Price = 24.50m },
-                    new OrderItem { Id = 3, OrderId = 2, ProductId = 3, Quantity = 3, Price = 15.75m },
-                    new OrderItem { Id = 4, OrderId = 2, ProductId = 4, Quantity = 2, Price = 20.0m }
+                    new OrderItem { Id = 4, OrderId = 2, ProductName = "Hat", ProductDescription = "A hat", ProductId = 4, Quantity = 2, Price = 20.0m },
+                    new OrderItem { Id = 5, OrderId = 2, ProductName = "T-Shirt", ProductDescription = "its a t-shirt size 10 cheap and amazing", ProductId = 5, Quantity = 2, Price = 20.0m },
+                    new OrderItem { Id = 6, OrderId = 2, ProductName = "Ball", ProductDescription = "A World class magnificent ball", ProductId = 6, Quantity = 2, Price = 20.0m },
+                    new OrderItem { Id = 7, OrderId = 2, ProductName = "Shoes", ProductDescription = "A pair of shoes", ProductId = 7, Quantity = 2, Price = 20.0m }
+
                 );
 
             modelBuilder.Entity<Product>()

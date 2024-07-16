@@ -44,13 +44,40 @@ namespace CustomerOrderSystem.Controllers
         }
 
         [Authorize(Roles = "Customer,Sales")]
+        [HttpGet("user/{userId}")]
+        public async Task<IActionResult> GetUserOrders(string userId)
+        {
+            var orders = await _context.Orders
+                .Include(o => o.OrderItems)
+                .Where(o => o.UserId == userId)
+                .Select(o => new OrderDto
+                {
+                    Id = o.Id,
+                    CustomerName = o.CustomerName,
+                    OrderDate = o.OrderDate,
+                    OrderItems = o.OrderItems.Select(oi => new OrderItemDto
+                    {
+                        Id = oi.Id,
+						OrderId=o.Id,
+                        Quantity = oi.Quantity,
+						ProductName=oi.ProductName,
+						ProductDescription=oi.ProductDescription,
+                        Price = oi.Price,
+                        ProductId = oi.ProductId,
+                    }).ToList()
+                })
+                .ToListAsync();
+
+            return Ok(orders);
+        }
+
+        [Authorize(Roles = "Customer,Sales")]
         [HttpPost]
         public async Task<ActionResult<OrderResponse>> CreateOrder([FromBody] OrderRequest request)
         {
 
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var userName = User.FindFirst(ClaimTypes.Name)?.Value;
-            // var id="71a18ec5-b295-4f31-841e-96e80a1c753d";
             // Console.WriteLine($"UserId: {userId}");
             // Console.WriteLine($"UserName: {userName}");
             // Console.WriteLine($"UserRole: {userRole}");
@@ -64,13 +91,17 @@ namespace CustomerOrderSystem.Controllers
             {
                 return BadRequest("Invalid order or order items.");
             }
-            // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJyYnZlZXIzaDUzNW5uM24zNW55bnk1dW1iYnQiLCJqdGkiOiJkOTViMDM1NS0zYmQzLTRiNWEtYTAyMi1iYzgzNTZmNzg3NTEiLCJpYXQiOiIxNzIwOTA5NjY1IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiIzMmRiYTRlNC03OTNhLTRiNDQtOWJiNS03ZjA1MzYyMGVkZWQiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoic3RyaW5nIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZW1haWxhZGRyZXNzIjoic3RyaW5nQGcuYyIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkN1c3RvbWVyIiwiZXhwIjoxNzIwOTEzMjY1LCJpc3MiOiJFeGFtcGxlSXNzdWVyIiwiYXVkIjoiRXhhbXBsZUF1ZGllbmNlIn0.udc7zfm8BkCJt_KU1PkXunXp9lcRXem9QRnOW8jjN_w"
 
             var orderItems = new List<OrderItem>();
 
             foreach (var item in request.OrderItems)
             {
                 var existingItem = orderItems.FirstOrDefault(i => i.ProductId == item.ProductId);
+                var existingProduct = await _context.Products.FirstOrDefaultAsync(p => p.Id == item.ProductId);
+                if (existingProduct == null)
+                {
+                    return BadRequest("Product not found.");
+                }
                 if (existingItem != null)
                 {
                     existingItem.Quantity += item.Quantity;
@@ -79,9 +110,11 @@ namespace CustomerOrderSystem.Controllers
                 {
                     orderItems.Add(new OrderItem
                     {
-                        ProductId = item.ProductId,
+                        ProductId = existingProduct.Id,
+                        ProductName = existingProduct.ProductName,
+                        ProductDescription = existingProduct.Description,
                         Quantity = item.Quantity,
-                        Price = item.Price
+						Price = existingProduct.Price
                     });
                 }
             }
@@ -122,6 +155,11 @@ namespace CustomerOrderSystem.Controllers
 
                 foreach (var item in request.OrderItems)
                 {
+                    var existingProduct = await _context.Products.FirstOrDefaultAsync(p => p.Id == item.ProductId);
+                    if (existingProduct == null)
+                    {
+                        return BadRequest("Product not found.");
+                    }
                     if (item.ProductId == null || item.Quantity == null)
                     {
                         return BadRequest("ProductId and Quantity must not be null.");
@@ -135,9 +173,11 @@ namespace CustomerOrderSystem.Controllers
                     {
                         existingOrder.OrderItems.Add(new OrderItem
                         {
-                            ProductId = item.ProductId,
+                            ProductId = existingProduct.Id,
+                            ProductName = existingProduct.ProductName,
+                            ProductDescription = existingProduct.Description,
                             Quantity = item.Quantity,
-                            Price = item.Price
+                            Price = existingProduct.Price
                         });
                     }
                 }
@@ -154,7 +194,7 @@ namespace CustomerOrderSystem.Controllers
         }
 
 
-		[Authorize (Roles = "Customer,Sales")]
+        [Authorize(Roles = "Customer,Sales")]
         [HttpDelete("{id}")]
         public async Task<ActionResult<OrderResponse>> DeleteOrder(int id)
         {
@@ -168,6 +208,25 @@ namespace CustomerOrderSystem.Controllers
             await _context.SaveChangesAsync();
 
             return Ok(existingOrder);
+        }
+
+        [Authorize(Roles = "Customer,Sales")]
+        [HttpGet("{id}/products")]
+        public async Task<IActionResult> GetOrderProducts(int id)
+        {
+            // get products details from orderItems
+            var products = await _context.OrderItems
+                .Where(oi => oi.OrderId == id)
+                .Select(oi => new ProductDto
+                {
+                    Id = oi.ProductId,
+                    ProductName = oi.Product.ProductName,
+                    Price = oi.Price,
+                    Description = oi.Product.Description
+                })
+                .ToListAsync();
+
+            return Ok(products);
         }
     }
 }

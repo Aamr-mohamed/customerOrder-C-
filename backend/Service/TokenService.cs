@@ -27,9 +27,9 @@ public class TokenService
             expiration
         );
         var tokenHandler = new JwtSecurityTokenHandler();
-        
+
         _logger.LogInformation("JWT Token created");
-        
+
         return tokenHandler.WriteToken(token);
     }
 
@@ -46,7 +46,7 @@ public class TokenService
     private List<Claim> CreateClaims(ApplicationUser user)
     {
         var jwtSub = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("JwtTokenSettings")["JwtRegisteredClaimNamesSub"];
-        
+
         try
         {
             var claims = new List<Claim>
@@ -57,9 +57,10 @@ public class TokenService
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
                 new Claim(ClaimTypes.Name, user.UserName),
                 new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Role, user.Role.ToString())
+                new Claim(ClaimTypes.Role, user.Role.ToString()),
+                new Claim(ClaimTypes.Expiration, DateTime.UtcNow.AddMinutes(ExpirationMinutes).ToString())
             };
-            
+
             return claims;
         }
         catch (Exception e)
@@ -72,7 +73,7 @@ public class TokenService
     private SigningCredentials CreateSigningCredentials()
     {
         var symmetricSecurityKey = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("JwtTokenSettings")["SymmetricSecurityKey"];
-        
+
         return new SigningCredentials(
             new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(symmetricSecurityKey)

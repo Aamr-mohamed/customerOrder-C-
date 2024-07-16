@@ -6,7 +6,7 @@ namespace CustomerOrderSystem.Models
     {
 		/// <example>1</example>
         [SwaggerParameter(Description = "The user id of the user who is placing the order")]
-        public int UserId { get; set; }
+        public string UserId { get; set; }
 
 		/// <example>John Doe</example>
         [SwaggerParameter(Description = "The name of the customer placing the order")]
@@ -29,9 +29,15 @@ namespace CustomerOrderSystem.Models
 		/// <example>2</example>
         [SwaggerParameter(Description = "The quantity of the product")]
         public int Quantity { get; set; }
+
+		/// <example>Shoes</example>
+		public string? ProductName { get; set; }
+
+		/// <example>A pair of shoes</example>
+		public string? ProductDescription { get; set; }
 		/// <example>10.5</example>
         [SwaggerParameter(Description = "The price of the product")]
-        public decimal Price { get; set; }
+        public decimal? Price { get; set; }
     }
 }
 
