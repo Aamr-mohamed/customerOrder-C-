@@ -1,0 +1,68 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Customer Orders</h1>
+    <button class="btn btn-outline-danger" (click)="logout()">
+      Logout
+    </button>
+    <button class="btn btn-primary" [routerLink]="['/addOrder']">
+      Add Order
+    </button>
+  </div>
+
+  <h2>Orders</h2>
+  <div class="table-responsive">
+    <table class="table table-hover">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Customer Name</th>
+          <th scope="col">Order Date</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let order of orders; let i = index">
+          <td>{{ order.id }}</td>
+          <td>{{ order.customerName }}</td>
+          <td>{{ order.orderDate | date: "medium" }}</td>
+          <td>
+            <div class="btn-group" role="group">
+              <button class="btn btn-outline-danger" (click)="deleteOrder(order.id)">
+                Delete
+              </button>
+              <button
+                class="btn btn-outline-primary"
+                [routerLink]="['/edit', order.id]"
+              >
+                Edit
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="d-flex justify-content-center">
+      <table class="table table-hover">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Order ID</th>
+            <th scope="col">Product Name</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Description</th>
+            <th scope="col">Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let items of orderItems; let i = index">
+            <td>{{ items.orderId }}</td>
+            <td>{{ items.productName }}</td>
+            <td>{{ items.quantity }}</td>
+            <td>{{ items.productDescription }}</td>
+            <td>{{ items.price }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

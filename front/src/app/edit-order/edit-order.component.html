@@ -1,0 +1,88 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Edit Order Items</h1>
+    <button class="btn btn-outline-danger" (click)="logout()">Logout</button>
+    <button class="btn btn-outline-primary" [routerLink]="['/customer']">Back</button>
+  </div>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Product Name</th>
+        <th>Description</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let product of orderItems">
+        <td>{{ product.productName }}</td>
+        <td>{{ product.productName }}</td>
+        <td>{{ product.productDescription }}</td>
+        <td>
+          <input
+            type="number"
+            class="form-control"
+            id="quantity"
+            placeholder="Quantity"
+            [(ngModel)]="product.quantity"
+            min="0"
+          />
+        </td>
+        <td>{{ product.price }}</td>
+        <input type="hidden" [(ngModel)]="productId" id="productId" />
+        <td>
+          <div class="btn-group">
+            <button
+              class="btn btn-outline-danger"
+              (click)="deleteOrderItem(product.id)"
+            >
+              Delete
+            </button>
+            <button
+              class="btn btn-outline-primary"
+              (click)="editOrderItem(product.id, product)"
+            >
+              Edit
+            </button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h1>Add Order Items</h1>
+
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="productName">Product Name</label>
+        <div class="input-group mb-3">
+          <select class="form-control" id="productName" [(ngModel)]="productId">
+            <option class="dropdown-item" disabled selected value="undefined">
+              Select Product
+            </option>
+            <option *ngFor="let product of products" [ngValue]="product.id">
+              {{ product.productName }}
+            </option>
+          </select>
+        </div>
+
+        <label for="quantity">Quantity</label>
+        <input
+          type="number"
+          class="form-control"
+          id="quantity"
+          placeholder="Quantity"
+          min="0"
+          [(ngModel)]="quantity"
+        />
+
+        <button class="btn btn-outline-primary mt-4" (click)="addOrderItem()">
+          Add
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

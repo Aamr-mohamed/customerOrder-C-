@@ -1,0 +1,48 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Add User</h1>
+    <button class="btn btn-outline-danger" (click)="logout()">Logout</button>
+    <button class="btn btn-outline-primary" [routerLink]="['/sales']">
+      Back
+    </button>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form-group my-2">
+        <label for="username">Username</label>
+        <input
+          type="text"
+          class="form-control"
+          id="username"
+          placeholder="Username"
+          [(ngModel)]="username"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          class="form-control"
+          id="email"
+          placeholder="Email"
+          [(ngModel)]="email"
+        />
+      </div>
+
+      <div class="form-group my-2">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          class="form-control"
+          id="password"
+          placeholder="Password"
+          [(ngModel)]="password"
+        />
+      </div>
+
+      <button class="btn btn-outline-primary mt-4" (click)="addUser()">Add User</button>
+    </div>
+  </div>
+</div>
